@@ -13,7 +13,8 @@ const IDVIncode = () => {
     //   },
     // },
   };
-  const { oneSDKInstance, error: errorOneSDK, loading } = useOneSDK({ config })
+  const provider = 'incode'
+  const { oneSDKInstance, error: errorOneSDK, loading } = useOneSDK({ config, provider })
   
   const initOneSDK = async () => {
       // 4. Use IDV component

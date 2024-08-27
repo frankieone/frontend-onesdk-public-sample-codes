@@ -14,9 +14,9 @@ export class IdverseComponent implements OnInit {
 	async ngOnInit() {
 		const oneSdk = await OneSDK({
 			session: await this.tokenService.getToken(
-				environment.CUSTOMER_ID2,
-				environment.API_KEY2,
-				environment.CUSTOMER_CHILD_ID2
+				environment.CUSTOMER_ID,
+				environment.API_KEY,
+				environment.CUSTOMER_CHILD_ID
 			),
 			recipe: {
 				idv: {

@@ -14,7 +14,7 @@ import SmartUI from './QATest/SmartUI';
 function App() {
   const methodMapping = ['End2End', 'End2EndOCR', 'IDV Incode', 'IDV Incode Dynamic', 'IDVerse', 'New Onboarding', 'New Onboarding Manual', 'Onfido', 'Sardine', 'Smart UI']
 
-  const [selectedMethod, setSelectedMethod] = useState('Sardine')
+  const [selectedMethod, setSelectedMethod] = useState('')
   const handleOnClickMethod = (method) => {
     setSelectedMethod(method)
   }

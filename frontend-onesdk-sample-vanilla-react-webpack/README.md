@@ -1,16 +1,13 @@
-# frontend-onesdk-sample-vanilla-react-webpack
-
-FrankieOne OneSDK integration sample using Vanilla React with webpack
-
 # Initialize the project
 
 to initialize the project, do <code>npm install</code>
 
 # .ENV credential
 
-create <code>.env</code> file
-and copy the content of env.example into the file
+create <code>.env</code> file on the root directory
+and copy the content of <code>.env.example</code> into your .env file. fill all the required key with your frankieone credentials
 
 # Start the project
 
 <code>npm start</code> to start the project
+OneSDK Sample Demo

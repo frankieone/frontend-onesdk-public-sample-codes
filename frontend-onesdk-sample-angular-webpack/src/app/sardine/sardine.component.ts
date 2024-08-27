@@ -16,6 +16,7 @@ export class SardineComponent implements OnInit {
 			session: await this.tokenService.getToken(
 				environment.CUSTOMER_ID,
 				environment.API_KEY,
+				environment.CUSTOMER_CHILD_ID,
 			),
 			recipe: {
 				form: {

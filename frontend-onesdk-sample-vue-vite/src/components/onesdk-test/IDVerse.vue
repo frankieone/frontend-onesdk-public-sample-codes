@@ -1,9 +1,9 @@
 <script setup>
-import { useOneSdkSessionWithChildId } from '@/composables/onesdk-session';
+import { useOneSdkSession } from '@/composables/onesdk-session';
 import OneSDK from '@frankieone/one-sdk';
 import { watchEffect } from 'vue';
 
-const session = useOneSdkSessionWithChildId()
+const session = useOneSdkSession()
 
 watchEffect(async () => {
 	if (!session.value) return

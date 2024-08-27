@@ -1,7 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 import End2End from './QATest/End2End';
+import End2EndOCR from './QATest/End2EndOCR';
 import IDVIncode from './QATest/IDVIncode';
+import IDVerse from './QATest/IDVerse';
 import IDVIncodeDynamic from './QATest/IDVIncodeDynamic';
 import NewOnboarding from './QATest/NewOnboarding';
 import NewOnboardingManual from './QATest/NewOnboardingManual';

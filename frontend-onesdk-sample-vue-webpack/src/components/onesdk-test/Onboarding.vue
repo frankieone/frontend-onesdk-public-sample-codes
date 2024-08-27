@@ -1,10 +1,10 @@
 <script setup>
-import { useOneSdkSessionWithChildId } from '@/composables/onesdk-session';
+import { useOneSdkSession } from '@/composables/onesdk-session';
 import { configurations } from '@/helper/onboarding.config';
 import OneSDK from '@frankieone/one-sdk';
 import { watchEffect } from 'vue';
 
-const session = useOneSdkSessionWithChildId()
+const session = useOneSdkSession()
 let welcome, consent, document, ocr, review
 
 watchEffect(async () => {

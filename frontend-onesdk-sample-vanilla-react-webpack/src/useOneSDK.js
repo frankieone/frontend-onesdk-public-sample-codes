@@ -9,6 +9,7 @@ const CHILD_ID = ''
 const CUSTOMER_ID2 = process.env.REACT_APP_CUSTOMER_ID2
 const API_KEY2 = process.env.REACT_APP_API_KEY2
 const CHILD_ID2 = process.env.REACT_APP_CUSTOMER_CHILD_ID2
+const BFF_BASE_URL = process.env.REACT_APP_BFF_BASE_URL
 
 const useOneSDK = ({config, alternateKey}) => {
   const [oneSDKInstance, setOneSDKInstance] = useState(null)
@@ -26,7 +27,7 @@ const useOneSDK = ({config, alternateKey}) => {
     }
     try {
 
-      const tokenRawAsync = await fetch("https://backend.latest.frankiefinancial.io/auth/v2/machine-session", {
+      const tokenRawAsync = await fetch(`${BFF_BASE_URL}/auth/v2/machine-session`, {
           method: "POST",
           headers: {
               "authorization": "machine " + parseURL(),

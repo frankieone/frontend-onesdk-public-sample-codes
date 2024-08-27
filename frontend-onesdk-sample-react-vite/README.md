@@ -9,11 +9,19 @@ Currently, two official plugins are available:
 
 # Getting Started
 
+first do
+
 ```bash
 npm i
 ```
 
-start
+# env Credentials
+
+create a <code>.env</code> file in root directory. copy the content of <code>.env.example</code> to .env . fill out the credentials in your .env file with the credentials you acqired from frankie one
+
+# Start Demo
+
+run
 
 ```bash
 npm run dev

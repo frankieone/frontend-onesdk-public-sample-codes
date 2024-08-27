@@ -13,7 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@frankieone/one-sdk": "0.0.5-npm",
+    "@frankieone/one-sdk": "1.7.3-rc",
     "vue": "^3.4.29",
     "vue-router": "^4.4.0"
   },

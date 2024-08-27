@@ -9,6 +9,7 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 const CUSTOMER_ID2 = import.meta.env.VITE_CUSTOMER_ID2;
 const API_KEY2 = import.meta.env.VITE_API_KEY2;
 const CHILD_ID2 = import.meta.env.VITE_CUSTOMER_CHILD_ID2;
+const BFF_URL = import.meta.env.VITE_PUBLIC_BFF_URL
 
 const useOneSDK = ({config, alternateKey}) => {
   const [oneSDKInstance, setOneSDKInstance] = useState(null)
@@ -25,7 +26,7 @@ const useOneSDK = ({config, alternateKey}) => {
     }
     try {
 
-      const tokenRawAsync = await fetch("https://backend.latest.frankiefinancial.io/auth/v2/machine-session", {
+      const tokenRawAsync = await fetch(`${BFF_URL}/auth/v2/machine-session`, {
           method: "POST",
           headers: {
               "authorization": "machine " + parseURL(),

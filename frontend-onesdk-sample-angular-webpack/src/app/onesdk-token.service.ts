@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +13,7 @@ export class OnesdkTokenService {
 		apikey: string,
 		childid?: string | undefined,
 	) => {
-		const response = await fetch("https://backend.latest.frankiefinancial.io/auth/v2/machine-session", {
+		const response = await fetch(environment.BASE_API_URL + environment.API_CREATE_SESSION_PATH, {
 			method: "POST",
 			headers: {
 				authorization:
