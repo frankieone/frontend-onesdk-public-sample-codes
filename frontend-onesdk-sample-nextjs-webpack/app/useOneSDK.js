@@ -6,11 +6,7 @@ const CUSTOMER_ID = process.env.NEXT_PUBLIC_CUSTOMER_ID
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY
 const CHILD_ID = ''
 
-const CUSTOMER_ID2 = process.env.NEXT_PUBLIC_CUSTOMER_ID2
-const API_KEY2 = process.env.NEXT_PUBLIC_API_KEY2
-const CHILD_ID2 = process.env.NEXT_PUBLIC_CUSTOMER_CHILD_ID2
-
-const useOneSDK = ({config, alternateKey}) => {
+const useOneSDK = ({config}) => {
   const [oneSDKInstance, setOneSDKInstance] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -18,9 +14,6 @@ const useOneSDK = ({config, alternateKey}) => {
 
   const generateToken = async () => {
     const parseURL = () => {
-      if(alternateKey) {
-        return btoa([CUSTOMER_ID2, CHILD_ID2, API_KEY2].filter(Boolean).join(":"))
-      }
       return btoa(`${CUSTOMER_ID}:${API_KEY}`)
     }
     try {
