@@ -24,8 +24,10 @@ export function useOneSdkSession() {
 				}
 			})
 		});
+
 		tokenResult.value = await tokenResultRaw.json();
 	});
+
 
 	return tokenResult;
 }
