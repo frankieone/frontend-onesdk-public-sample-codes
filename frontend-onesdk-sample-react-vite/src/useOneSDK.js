@@ -35,7 +35,7 @@ const useOneSDK = ({config, alternateKey}) => {
           body: JSON.stringify({
               permissions: {
                   "preset": "one-sdk",
-                  "reference": `demo-${new Date().toISOString()}`//"<YOUR_UNIQUE_CUSTOMER_REF>"
+                  "reference": `demo-hello-there-general-kenobi`//"<YOUR_UNIQUE_CUSTOMER_REF>"
               }
           })
       });
