@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@frankieone/one-sdk':
-        specifier: ^0.0.3-npm
-        version: 0.0.3-npm(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)
+        specifier: 1.7.6
+        version: 1.7.6(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -26,7 +26,7 @@ importers:
         version: 18.3.0
       '@vitejs/plugin-react':
         specifier: ^4.3.1
-        version: 4.3.1(vite@5.3.4(@types/node@20.14.11))
+        version: 4.3.1(vite@5.3.6(@types/node@20.14.11))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -40,8 +40,8 @@ importers:
         specifier: ^0.4.7
         version: 0.4.9(eslint@8.57.0)
       vite:
-        specifier: ^5.3.4
-        version: 5.3.4(@types/node@20.14.11)
+        specifier: ^5.3.6
+        version: 5.3.6(@types/node@20.14.11)
 
 packages:
 
@@ -315,8 +315,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@frankieone/one-sdk@0.0.3-npm':
-    resolution: {integrity: sha512-4Rm37mBj7uvYwgsv6Kb80JNJ6W60Bgz6EbxC3VOCeT4qoHoP2ijsdP+bqlr1b65A/eW3cmcEwJzZCjxL7Q4hiQ==}
+  '@frankieone/one-sdk@1.7.6':
+    resolution: {integrity: sha512-/zuJIQ/PtpuV9WDGZarPc7X0UWrx9bUHt8ypsqXPSQheCRuQR58NvnZN7o8xDku8X21/jkqtMYfsCp6X72OW1g==}
     engines: {node: '>=18', npm: '>=10'}
     peerDependencies:
       ts-toolbelt: ^9.0.0
@@ -898,6 +898,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -1747,8 +1748,8 @@ packages:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
 
-  vite@5.3.4:
-    resolution: {integrity: sha512-Cw+7zL3ZG9/NZBB8C+8QbQZmR54GwqIz+WMI4b3JgdYJvX+ny9AjJXqkGQlDXSXRP9rP0B4tbciRMOVEKulVOA==}
+  vite@5.3.6:
+    resolution: {integrity: sha512-es78AlrylO8mTVBygC0gTC0FENv0C6T496vvd33ydbjF/mIi9q3XQ9A3NWo5qLGFKywvz10J26813OkLvcQleA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -2062,7 +2063,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@frankieone/one-sdk@0.0.3-npm(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)':
+  '@frankieone/one-sdk@1.7.6(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)':
     dependencies:
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@testing-library/jest-dom': 5.17.0
@@ -2306,14 +2307,14 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-react@4.3.1(vite@5.3.4(@types/node@20.14.11))':
+  '@vitejs/plugin-react@4.3.1(vite@5.3.6(@types/node@20.14.11))':
     dependencies:
       '@babel/core': 7.24.9
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.24.9)
       '@babel/plugin-transform-react-jsx-source': 7.24.7(@babel/core@7.24.9)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.3.4(@types/node@20.14.11)
+      vite: 5.3.6(@types/node@20.14.11)
     transitivePeerDependencies:
       - supports-color
 
@@ -3708,7 +3709,7 @@ snapshots:
 
   uuid@8.3.2: {}
 
-  vite@5.3.4(@types/node@20.14.11):
+  vite@5.3.6(@types/node@20.14.11):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.39
