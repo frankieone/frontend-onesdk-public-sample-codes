@@ -498,8 +498,9 @@ export class OnboardingManualComponent implements OnInit {
 
 		const form_review = component("form", {
 			name: "REVIEW",
-			type: "ocr",
-			verify: true
+			type: "manual",
+			verify: true,
+			customResult: true,
 		});
 
 		const form_retry = component("form", {
@@ -507,18 +508,23 @@ export class OnboardingManualComponent implements OnInit {
 			type: "manual",
 		});
 
-		const form_result = component("form", {
+		const form_result_success = component("form", {
+			name: "RESULT",
+			type: "manual",
+			state: 'SUCCESS',
+			cta: { label: 'Close' }
+		});
+
+		const form_result_failed = component("form", {
 			name: "RESULT",
 			type: "manual",
 			state: 'FAIL',
-			title: { label: 'Complete' },
-			descriptions: [{ label: 'Process is now complete. You can close the page' }],
 			cta: { label: 'Close' }
 		});
 
 		form_welcome.mount("#onboarding-manual-container");
 		form_welcome.on("form:welcome:ready", () => {
-			form_review.mount("#onboarding-manual-container");
+			form_consent.mount("#onboarding-manual-container");
 		});
 
 		form_consent.on("form:consent:ready", async () => {
@@ -537,16 +543,36 @@ export class OnboardingManualComponent implements OnInit {
 			form_review.mount("#onboarding-manual-container");
 		});
 
-		form_review.on("form:review:ready", async ({ inputInfo }: { inputInfo: any; }) => {
-			form_review.mount("#onboarding-manual-container");
-		});
+		form_review.on("*", console.log);
 
 		let count = 0;
-		form_review.on("form:result:partial", async () => {
+
+		form_review.on("form:result:success", async () => {
+			form_result_success.mount('#onboarding-manual-container');
+		});
+
+		form_review.on("form:result:failed", async () => {
+			form_result_failed.mount('#onboarding-manual-container');
+		});
+
+		const partial = component("form", {
+			name: "RESULT",
+			mode: "individual",
+			state: "PARTIAL",
+			type: "manual",
+		});
+		
+		form_review.on("form:review:partial", async () => {
 			if (count < 2) {
-				form_retry.mount("#onboarding-manual-container");
-				count += 1;
+				count += 1
+				partial.mount("#onboarding-manual-container");
+			} else {
+				form_result_failed.mount("#onboarding-manual-container");
 			}
 		});
+
+		partial.on("form:result:partial", async () => {
+			form_retry.mount("#onboarding-manual-container");
+		})
 	}
 }
