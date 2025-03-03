@@ -1,25 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IdvDynamicComponent } from './idv-dynamic/idv-dynamic.component';
-import { IdverseComponent } from './idverse/idverse.component';
+import { IdvComponent } from './idv/idv.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { OnboardingManualComponent } from './onboarding-manual/onboarding-manual.component';
-import { OnfidoComponent } from './onfido/onfido.component';
 import { SardineComponent } from './sardine/sardine.component';
 import { SmartUiComponent } from './smart-ui/smart-ui.component';
-import { E2eIdvComponent } from './e2e-idv/e2e-idv.component';
+import { IdvReviewComponent } from './idv-review/idv-review';
 import { E2eOcrBioComponent } from './e2e-ocr-bio/e2e-ocr-bio.component';
 
 const routes: Routes = [
 	{
-		path: 'idv-dynamic',
-		title: 'IDV Dynamic',
-		component: IdvDynamicComponent
-	},
-	{
-		path: 'idverse',
-		title: 'IDVerse',
-		component: IdverseComponent
+		path: 'idv',
+		title: 'IDV',
+		component: IdvComponent
 	},
 	{
 		path: 'onboarding',
@@ -32,11 +25,6 @@ const routes: Routes = [
 		component: OnboardingManualComponent
 	},
 	{
-		path: 'onfido',
-		title: 'Onfido',
-		component: OnfidoComponent
-	},
-	{
 		path: 'sardine',
 		title: 'Sardine',
 		component: SardineComponent
@@ -47,9 +35,9 @@ const routes: Routes = [
 		component: SmartUiComponent
 	},
 	{
-		path: 'e2e-idv',
+		path: 'idv-review',
 		title: 'IDV + Review Screen',
-		component: E2eIdvComponent
+		component: IdvReviewComponent,
 	},
 	{
 		path: 'e2e-ocr-bio',

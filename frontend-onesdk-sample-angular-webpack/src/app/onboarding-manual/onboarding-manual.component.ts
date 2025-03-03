@@ -481,7 +481,7 @@ export class OnboardingManualComponent implements OnInit {
 				form: {
 					provider: {
 						name: 'react',
-						googleApiKey: environment.GOOGLE_API_KEY
+						googleApiKey: environment.GOOGLE_API_KEY,
 					},
 				}
 			}
@@ -547,11 +547,11 @@ export class OnboardingManualComponent implements OnInit {
 
 		let count = 0;
 
-		form_review.on("form:result:success", async () => {
+		form_review.on("form:review:success", async () => {
 			form_result_success.mount('#onboarding-manual-container');
 		});
 
-		form_review.on("form:result:failed", async () => {
+		form_review.on("form:review:failed", async () => {
 			form_result_failed.mount('#onboarding-manual-container');
 		});
 

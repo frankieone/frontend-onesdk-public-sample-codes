@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IdverseComponent } from './idverse.component';
+import { IdvDynamicComponent } from './idv.component';
 
-describe('IdverseComponent', () => {
-  let component: IdverseComponent;
-  let fixture: ComponentFixture<IdverseComponent>;
+describe('IdvDynamicComponent', () => {
+  let component: IdvDynamicComponent;
+  let fixture: ComponentFixture<IdvDynamicComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [IdverseComponent]
+      declarations: [IdvDynamicComponent]
     });
-    fixture = TestBed.createComponent(IdverseComponent);
+    fixture = TestBed.createComponent(IdvDynamicComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,11 +4,11 @@ import OneSDK from '@frankieone/one-sdk';
 import { environment } from 'src/environments/environment';
 
 @Component({
-	selector: 'app-e2e-idv',
-	templateUrl: './e2e-idv.component.html',
-	styleUrls: ['./e2e-idv.component.css']
+	selector: 'app-idv-review',
+	templateUrl: './idv-review.component.html',
+	styleUrls: ['./idv-review.component.css']
 })
-export class E2eIdvComponent implements OnInit {
+export class IdvReviewComponent implements OnInit {
 	constructor(private tokenService: OnesdkTokenService) { }
 
 	async ngOnInit() {

@@ -114,14 +114,12 @@
 			class="card card-small" 
 			tabindex="0"
 			*ngFor="let menu of [
-          { title: 'IDV', link: '/idv-dynamic' },
-          { title: 'IDVerse', link: '/idverse' },
+          { title: 'IDV', link: '/idv' },
+          { title: 'IDV + Review', link: '/idv-review' },
           { title: 'Onboarding', link: '/onboarding' },
           { title: 'Onboarding Manual', link: '/onboarding-manual' },
-          { title: 'Onfido', link: '/onfido' },
           { title: 'Sardine', link: '/sardine' },
           { title: 'SmartUI', link: '/smartui' },
-          { title: 'IDV + Review Screen', link: '/e2e-idv' },
           { title: 'E2E OCR BIO', link: '/e2e-ocr-bio' },
         ]"
 			[routerLink]="menu.link"

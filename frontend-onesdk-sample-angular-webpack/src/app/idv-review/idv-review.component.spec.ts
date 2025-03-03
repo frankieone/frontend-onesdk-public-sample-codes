@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { E2eIdvComponent } from './e2e-idv.component';
+import { E2eIdvComponent } from './idv-review';
 
 describe('E2eIdvComponent', () => {
   let component: E2eIdvComponent;
