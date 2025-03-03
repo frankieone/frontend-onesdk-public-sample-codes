@@ -39,7 +39,6 @@ export class E2eIdvComponent implements OnInit {
 
 		const idv = flow("idv");
 		const loading1 = component("form", { name: "LOADING", title: { label: "Loading..." }, descriptions: [{ label: "" }] });
-		const loading2 = component("form", { name: "LOADING", title: { label: "Processing results..." }, descriptions: [{ label: "Hold tight, this can take up to 30 seconds. Please do not refresh this page or click the 'back' button on your browser." }] });
 		const review = component("form", {
 			name: "REVIEW",
 			type: "ocr",
@@ -59,15 +58,8 @@ export class E2eIdvComponent implements OnInit {
 			}
 		});
 
-		idv.on("results", async ({ checkStatus }: { checkStatus: any; }) => {
-			if (checkStatus) {
-				loading2.unmount();
-				review.mount("#e2e-idv-container");
-			}
-		});
-
-		idv.on("detection_complete", (message: any) => {
-			loading2.mount("#e2e-idv-loading2");
+		idv.on("results", async () => {
+			review.mount("#e2e-idv-container");
 		});
 
 		idv.mount("#e2e-idv-container");

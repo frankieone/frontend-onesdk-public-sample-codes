@@ -12,6 +12,7 @@ export class OnboardingManualComponent implements OnInit {
 	constructor(private tokenService: OnesdkTokenService) { }
 
 	configurations = {
+
 		async configureWelcome(configureWelcome: any) {
 			let configWelcome: any = { name: "WELCOME", type: "manual" };
 
@@ -497,7 +498,7 @@ export class OnboardingManualComponent implements OnInit {
 
 		const form_review = component("form", {
 			name: "REVIEW",
-			type: "manual",
+			type: "ocr",
 			verify: true
 		});
 
@@ -517,7 +518,7 @@ export class OnboardingManualComponent implements OnInit {
 
 		form_welcome.mount("#onboarding-manual-container");
 		form_welcome.on("form:welcome:ready", () => {
-			form_consent.mount("#onboarding-manual-container");
+			form_review.mount("#onboarding-manual-container");
 		});
 
 		form_consent.on("form:consent:ready", async () => {

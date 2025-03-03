@@ -48,7 +48,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'e2e-idv',
-		title: 'E2E IDV',
+		title: 'IDV + Review Screen',
 		component: E2eIdvComponent
 	},
 	{

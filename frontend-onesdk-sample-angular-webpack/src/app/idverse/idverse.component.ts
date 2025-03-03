@@ -21,7 +21,13 @@ export class IdverseComponent implements OnInit {
 			recipe: {
 				idv: {
 					provider: {
-						name: "ocrlabs"
+						name: "incode"
+					}
+				},
+				form: {
+					provider: {
+						name: 'react',
+						googleApiKey: environment.GOOGLE_API_KEY
 					}
 				}
 			},
@@ -35,6 +41,18 @@ export class IdverseComponent implements OnInit {
 		oneSdkIndividual.addConsent("docs");
 		oneSdkIndividual.addConsent("creditheader");
 		await oneSdkIndividual.submit();
+
+		const component = oneSdk.component as unknown as (arg0: any, arg1?: any) => any;
+		const review_screen = component('form', {
+			name: "REVIEW",
+			type: "ocr",
+			verify: true
+		});
+
+		idv.on("results", async () => {
+			console.log("IDV finished");
+			review_screen.mount("#idverse");
+		});
 
 		idv.mount("#idverse");
 	}
