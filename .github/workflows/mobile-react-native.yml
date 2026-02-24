@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'mobile-onesdk-sample-react-native/**'
+      - '.github/workflows/mobile-react-native.yml'
   workflow_dispatch:
 
 permissions:
@@ -35,14 +36,13 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-
-      - name: Make gradlew executable
-        run: chmod +x mobile-onesdk-sample-react-native/android/gradlew
+        with:
+          gradle-version: '8.6'
 
       - name: Build debug APK
         run: |
           cd mobile-onesdk-sample-react-native/android
-          ./gradlew assembleDebug
+          gradle assembleDebug
 
       - name: Delete old release if exists
         run: gh release delete mobile-react-native-latest --yes || true

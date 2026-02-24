@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'mobile-onesdk-sample-flutter/**'
+      - '.github/workflows/mobile-flutter.yml'
   workflow_dispatch:
 
 permissions:
