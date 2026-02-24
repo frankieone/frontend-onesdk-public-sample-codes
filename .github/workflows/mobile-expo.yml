@@ -56,6 +56,22 @@ jobs:
           cd mobile-onesdk-sample-expo
           npx expo prebuild --platform android --no-install
 
+      - name: Patch generated build.gradle to bundle JS in debug APK
+        run: |
+          python3 - <<'EOF'
+          import re, sys
+          path = 'mobile-onesdk-sample-expo/android/app/build.gradle'
+          text = open(path).read()
+          # Insert debuggableVariants = [] inside the react {} block so the
+          # Gradle plugin bundles JS into the APK (default skips debug variants).
+          patched = re.sub(r'(react\s*\{)', r'\1\n    debuggableVariants = []', text, count=1)
+          if patched == text:
+              print("WARNING: react {} block not found — bundle may be missing", file=sys.stderr)
+          else:
+              open(path, 'w').write(patched)
+              print("Patched: debuggableVariants = [] added to react {} block")
+          EOF
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -70,7 +86,7 @@ jobs:
       - name: Build debug APK
         run: |
           cd mobile-onesdk-sample-expo/android
-          gradle assembleDebug -PbundleInDebug=true
+          gradle assembleDebug
 
       - name: Rename APK
         run: mv mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/app-debug.apk mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/f1-expo.apk
