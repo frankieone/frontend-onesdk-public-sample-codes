@@ -14,7 +14,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "react-native-safe-area-context": "^4.8.2",
-    "react-native-screens": "^3.29.0",
+    "react-native-screens": "3.29.0",
     "react-native-webview": "^13.6.4"
   },
   "devDependencies": {

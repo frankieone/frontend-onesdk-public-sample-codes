@@ -18,3 +18,11 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// Enforce JVM target 17 for all Kotlin compilations (including third-party modules
+// like react-native-screens) to match the JDK used in CI.
+allprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions.jvmTarget = "17"
+    }
+}
