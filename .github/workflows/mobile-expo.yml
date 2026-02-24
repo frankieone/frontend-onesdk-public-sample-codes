@@ -70,7 +70,10 @@ jobs:
       - name: Build debug APK
         run: |
           cd mobile-onesdk-sample-expo/android
-          gradle assembleDebug
+          gradle assembleDebug -PbundleInDebug=true
+
+      - name: Rename APK
+        run: mv mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/app-debug.apk mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/f1-expo.apk
 
       - name: Delete old release if exists
         run: gh release delete mobile-expo-latest --yes || true
@@ -83,7 +86,7 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-expo-latest \
-            'mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/app-debug.apk#f1-expo.apk' \
+            mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/f1-expo.apk \
             --title "F1 Expo (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false

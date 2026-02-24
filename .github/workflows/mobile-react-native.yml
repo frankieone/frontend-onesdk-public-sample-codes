@@ -40,7 +40,10 @@ jobs:
       - name: Build debug APK
         run: |
           cd mobile-onesdk-sample-react-native/android
-          gradle assembleDebug
+          gradle assembleDebug -PbundleInDebug=true
+
+      - name: Rename APK
+        run: mv mobile-onesdk-sample-react-native/android/app/build/outputs/apk/debug/app-debug.apk mobile-onesdk-sample-react-native/android/app/build/outputs/apk/debug/f1-react-native.apk
 
       - name: Delete old release if exists
         run: gh release delete mobile-react-native-latest --yes || true
@@ -53,7 +56,7 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-react-native-latest \
-            'mobile-onesdk-sample-react-native/android/app/build/outputs/apk/debug/app-debug.apk#f1-react-native.apk' \
+            mobile-onesdk-sample-react-native/android/app/build/outputs/apk/debug/f1-react-native.apk \
             --title "F1 RN (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false

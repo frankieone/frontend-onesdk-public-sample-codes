@@ -32,6 +32,9 @@ jobs:
           cd mobile-onesdk-sample-android
           gradle assembleDebug
 
+      - name: Rename APK
+        run: mv mobile-onesdk-sample-android/app/build/outputs/apk/debug/app-debug.apk mobile-onesdk-sample-android/app/build/outputs/apk/debug/f1-android.apk
+
       - name: Delete old release if exists
         run: gh release delete mobile-android-latest --yes || true
         env:
@@ -43,7 +46,7 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-android-latest \
-            'mobile-onesdk-sample-android/app/build/outputs/apk/debug/app-debug.apk#f1-android.apk' \
+            mobile-onesdk-sample-android/app/build/outputs/apk/debug/f1-android.apk \
             --title "F1 Android (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false

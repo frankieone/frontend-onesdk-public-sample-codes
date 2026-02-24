@@ -32,6 +32,9 @@ jobs:
           cd mobile-onesdk-sample-flutter
           flutter build apk --debug
 
+      - name: Rename APK
+        run: mv mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/app-debug.apk mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/f1-flutter.apk
+
       - name: Delete old release if exists
         run: gh release delete mobile-flutter-latest --yes || true
         env:
@@ -43,7 +46,7 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-flutter-latest \
-            'mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/app-debug.apk#f1-flutter.apk' \
+            mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/f1-flutter.apk \
             --title "F1 Flutter (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false
