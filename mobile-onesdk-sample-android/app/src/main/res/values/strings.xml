@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FrankieOne OneSDK Sample</string>
+    <string name="app_name">F1 Android</string>
     <string name="label_environment">Environment</string>
     <string name="label_api_key">API Key</string>
     <string name="label_customer_id">Customer ID</string>

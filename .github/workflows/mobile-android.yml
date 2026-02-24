@@ -43,8 +43,8 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-android-latest \
-            mobile-onesdk-sample-android/app/build/outputs/apk/debug/app-debug.apk \
-            --title "Android OneSDK Sample (latest)" \
+            'mobile-onesdk-sample-android/app/build/outputs/apk/debug/app-debug.apk#f1-android.apk' \
+            --title "F1 Android (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false
         env:

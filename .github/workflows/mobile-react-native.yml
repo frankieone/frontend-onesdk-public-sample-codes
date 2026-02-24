@@ -53,8 +53,8 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-react-native-latest \
-            mobile-onesdk-sample-react-native/android/app/build/outputs/apk/debug/app-debug.apk \
-            --title "React Native OneSDK Sample (latest)" \
+            'mobile-onesdk-sample-react-native/android/app/build/outputs/apk/debug/app-debug.apk#f1-react-native.apk' \
+            --title "F1 RN (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false
         env:

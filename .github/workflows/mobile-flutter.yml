@@ -43,8 +43,8 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-flutter-latest \
-            mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/app-debug.apk \
-            --title "Flutter OneSDK Sample (latest)" \
+            'mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/app-debug.apk#f1-flutter.apk' \
+            --title "F1 Flutter (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false
         env:

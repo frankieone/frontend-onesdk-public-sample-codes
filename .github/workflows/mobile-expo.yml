@@ -58,8 +58,8 @@ jobs:
       - name: Create GitHub Release
         run: |
           gh release create mobile-expo-latest \
-            mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/app-debug.apk \
-            --title "Expo OneSDK Sample (latest)" \
+            'mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/app-debug.apk#f1-expo.apk' \
+            --title "F1 Expo (latest)" \
             --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
             --latest=false
         env:
