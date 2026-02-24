@@ -26,6 +26,31 @@ jobs:
           cd mobile-onesdk-sample-expo
           npm install
 
+      - name: Generate placeholder icon assets
+        run: |
+          cd mobile-onesdk-sample-expo
+          mkdir -p assets
+          python3 - <<'EOF'
+          import struct, zlib
+
+          def make_png(width, height, r, g, b):
+              def chunk(tag, data):
+                  c = tag + data
+                  return struct.pack('>I', len(data)) + c + struct.pack('>I', zlib.crc32(c) & 0xffffffff)
+              raw = b''.join(b'\x00' + bytes([r, g, b] * width) for _ in range(height))
+              return (b'\x89PNG\r\n\x1a\n'
+                      + chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 2, 0, 0, 0))
+                      + chunk(b'IDAT', zlib.compress(raw))
+                      + chunk(b'IEND', b''))
+
+          for name, w, h, r, g, b in [
+              ('assets/icon.png',          1024, 1024, 26, 115, 232),
+              ('assets/adaptive-icon.png', 1024, 1024, 26, 115, 232),
+              ('assets/splash.png',        1284, 2778, 255, 255, 255),
+          ]:
+              open(name, 'wb').write(make_png(w, h, r, g, b))
+          EOF
+
       - name: Expo prebuild
         run: |
           cd mobile-onesdk-sample-expo
