@@ -15,6 +15,8 @@ export type RootStackParamList = {
     customerId: string;
     customerChildId: string;
     flowId: string;
+    customerRef: string;
+    entityId: string;
   };
 };
 

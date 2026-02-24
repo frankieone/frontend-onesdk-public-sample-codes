@@ -7,6 +7,8 @@ struct WebViewScreen: View {
     let customerId: String
     let customerChildId: String
     let flowId: String
+    let customerRef: String
+    let entityId: String
 
     @State private var onboardingURL: URL?
     @State private var isLoading = true
@@ -40,7 +42,7 @@ struct WebViewScreen: View {
         let endpoint = "\(baseURL)/idv/v2/idvalidate/onboarding-url"
 
         guard let url = URL(string: endpoint) else {
-            showError(message: "Invalid API endpoint URL.")
+            showErrorAlert(message: "Invalid API endpoint URL.")
             return
         }
 
@@ -54,16 +56,19 @@ struct WebViewScreen: View {
             request.setValue(customerChildId, forHTTPHeaderField: "X-Frankie-CustomerChildID")
         }
 
-        let body: [String: Any] = [
-            "customerRef": UUID().uuidString,
+        var body: [String: Any] = [
+            "customerRef": customerRef.isEmpty ? UUID().uuidString : customerRef,
             "consent": true,
             "flowId": flowId
         ]
+        if !entityId.isEmpty {
+            body["entityId"] = entityId
+        }
 
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: body)
         } catch {
-            showError(message: "Failed to encode request body: \(error.localizedDescription)")
+            showErrorAlert(message: "Failed to encode request body: \(error.localizedDescription)")
             return
         }
 
@@ -71,31 +76,31 @@ struct WebViewScreen: View {
             let (data, response) = try await URLSession.shared.data(for: request)
 
             guard let httpResponse = response as? HTTPURLResponse else {
-                showError(message: "Invalid server response.")
+                showErrorAlert(message: "Invalid server response.")
                 return
             }
 
             guard (200...299).contains(httpResponse.statusCode) else {
                 let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-                showError(message: "Server returned status \(httpResponse.statusCode): \(responseBody)")
+                showErrorAlert(message: "Server returned status \(httpResponse.statusCode): \(responseBody)")
                 return
             }
 
             guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let urlString = json["url"] as? String,
                   let onboardingURL = URL(string: urlString) else {
-                showError(message: "Failed to parse onboarding URL from response.")
+                showErrorAlert(message: "Failed to parse onboarding URL from response.")
                 return
             }
 
             self.onboardingURL = onboardingURL
             self.isLoading = false
         } catch {
-            showError(message: "Network request failed: \(error.localizedDescription)")
+            showErrorAlert(message: "Network request failed: \(error.localizedDescription)")
         }
     }
 
-    private func showError(message: String) {
+    private func showErrorAlert(message: String) {
         errorMessage = message
         isLoading = false
         showError = true
@@ -112,9 +117,28 @@ struct WebView: UIViewRepresentable {
 
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.allowsBackForwardNavigationGestures = true
+        webView.uiDelegate = context.coordinator
         webView.load(URLRequest(url: url))
         return webView
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+
+    class Coordinator: NSObject, WKUIDelegate {
+        // Grant camera/microphone access requested by the hosted OneSDK page (iOS 15+)
+        @available(iOS 15.0, *)
+        func webView(
+            _ webView: WKWebView,
+            requestMediaCapturePermissionFor origin: WKSecurityOrigin,
+            initiatedByFrame frame: WKFrameInfo,
+            type: WKMediaCaptureType,
+            decisionHandler: @escaping (WKPermissionDecision) -> Void
+        ) {
+            decisionHandler(.grant)
+        }
+    }
 }

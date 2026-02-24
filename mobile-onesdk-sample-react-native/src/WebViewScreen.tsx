@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function WebViewScreen({navigation, route}: Props) {
-  const {baseUrl, apiKey, customerId, customerChildId, flowId, customerRef} =
+  const {baseUrl, apiKey, customerId, customerChildId, flowId, customerRef, entityId} =
     route.params;
 
   const [onboardingUrl, setOnboardingUrl] = useState<string | null>(null);
@@ -19,9 +19,7 @@ export default function WebViewScreen({navigation, route}: Props) {
   const fetchedRef = useRef(false);
 
   useEffect(() => {
-    if (fetchedRef.current) {
-      return;
-    }
+    if (fetchedRef.current) return;
     fetchedRef.current = true;
     fetchOnboardingUrl();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,16 +37,21 @@ export default function WebViewScreen({navigation, route}: Props) {
         headers['X-Frankie-CustomerChildID'] = customerChildId;
       }
 
+      const body: Record<string, unknown> = {
+        customerRef,
+        consent: true,
+        flowId,
+      };
+      if (entityId) {
+        body.entityId = entityId;
+      }
+
       const response = await fetch(
         `${baseUrl}/idv/v2/idvalidate/onboarding-url`,
         {
           method: 'POST',
           headers,
-          body: JSON.stringify({
-            customerRef,
-            consent: true,
-            flowId,
-          }),
+          body: JSON.stringify(body),
         },
       );
 
@@ -93,9 +96,6 @@ export default function WebViewScreen({navigation, route}: Props) {
       <WebView
         source={{uri: onboardingUrl}}
         style={styles.webview}
-        onNavigationStateChange={() => {
-          setLoading(false);
-        }}
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => setLoading(false)}
         javaScriptEnabled

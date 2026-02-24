@@ -15,6 +15,8 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
   final _customerIdController = TextEditingController();
   final _customerChildIdController = TextEditingController();
   final _flowIdController = TextEditingController();
+  final _customerRefController = TextEditingController();
+  final _entityIdController = TextEditingController();
 
   String _environment = 'UAT';
 
@@ -30,9 +32,10 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
       _environment = prefs.getString('environment') ?? 'UAT';
       _apiKeyController.text = prefs.getString('apiKey') ?? '';
       _customerIdController.text = prefs.getString('customerId') ?? '';
-      _customerChildIdController.text =
-          prefs.getString('customerChildId') ?? '';
+      _customerChildIdController.text = prefs.getString('customerChildId') ?? '';
       _flowIdController.text = prefs.getString('flowId') ?? 'idv';
+      _customerRefController.text = prefs.getString('customerRef') ?? '';
+      _entityIdController.text = prefs.getString('entityId') ?? '';
     });
   }
 
@@ -43,6 +46,8 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
     await prefs.setString('customerId', _customerIdController.text);
     await prefs.setString('customerChildId', _customerChildIdController.text);
     await prefs.setString('flowId', _flowIdController.text);
+    await prefs.setString('customerRef', _customerRefController.text);
+    await prefs.setString('entityId', _entityIdController.text);
   }
 
   void _startVerification() async {
@@ -61,6 +66,8 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
           customerId: _customerIdController.text,
           customerChildId: _customerChildIdController.text,
           flowId: _flowIdController.text,
+          customerRef: _customerRefController.text,
+          entityId: _entityIdController.text,
         ),
       ),
     );
@@ -72,6 +79,8 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
     _customerIdController.dispose();
     _customerChildIdController.dispose();
     _flowIdController.dispose();
+    _customerRefController.dispose();
+    _entityIdController.dispose();
     super.dispose();
   }
 
@@ -97,13 +106,10 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
                 ),
                 items: const [
                   DropdownMenuItem(value: 'UAT', child: Text('UAT')),
-                  DropdownMenuItem(
-                      value: 'Production', child: Text('Production')),
+                  DropdownMenuItem(value: 'Production', child: Text('Production')),
                 ],
                 onChanged: (value) {
-                  if (value != null) {
-                    setState(() => _environment = value);
-                  }
+                  if (value != null) setState(() => _environment = value);
                 },
               ),
               const SizedBox(height: 16),
@@ -114,12 +120,8 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
                   labelText: 'API Key',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'API Key is required';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    (value == null || value.isEmpty) ? 'API Key is required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -128,12 +130,8 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
                   labelText: 'Customer ID',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Customer ID is required';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    (value == null || value.isEmpty) ? 'Customer ID is required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -150,12 +148,31 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
                   labelText: 'Flow ID',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Flow ID is required';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    (value == null || value.isEmpty) ? 'Flow ID is required' : null,
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Session (fill one or leave both empty)',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _customerRefController,
+                decoration: const InputDecoration(
+                  labelText: 'Customer Reference (optional)',
+                  hintText: 'Auto-generated if empty',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _entityIdController,
+                decoration: const InputDecoration(
+                  labelText: 'Entity ID (optional)',
+                  hintText: 'Existing entity ID',
+                  border: OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

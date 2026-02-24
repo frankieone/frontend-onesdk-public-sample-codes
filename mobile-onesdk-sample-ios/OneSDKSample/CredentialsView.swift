@@ -20,6 +20,8 @@ struct CredentialsView: View {
     @AppStorage("customerId") private var customerId: String = ""
     @AppStorage("customerChildId") private var customerChildId: String = ""
     @AppStorage("flowId") private var flowId: String = "idv"
+    @AppStorage("customerRef") private var customerRef: String = ""
+    @AppStorage("entityId") private var entityId: String = ""
 
     @State private var navigateToWebView = false
 
@@ -59,6 +61,16 @@ struct CredentialsView: View {
                     .disableAutocorrection(true)
             }
 
+            Section(header: Text("Session (fill one or leave both empty)")) {
+                TextField("Customer Reference (optional)", text: $customerRef)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+
+                TextField("Entity ID (optional)", text: $entityId)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+            }
+
             Section {
                 NavigationLink(
                     destination: WebViewScreen(
@@ -66,7 +78,9 @@ struct CredentialsView: View {
                         apiKey: apiKey,
                         customerId: customerId,
                         customerChildId: customerChildId,
-                        flowId: flowId
+                        flowId: flowId,
+                        customerRef: customerRef,
+                        entityId: entityId
                     ),
                     isActive: $navigateToWebView
                 ) {

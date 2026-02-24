@@ -22,7 +22,20 @@ const STORAGE_KEYS = {
   CUSTOMER_ID: '@onesdk_customer_id',
   CUSTOMER_CHILD_ID: '@onesdk_customer_child_id',
   FLOW_ID: '@onesdk_flow_id',
+  CUSTOMER_REF: '@onesdk_customer_ref',
+  ENTITY_ID: '@onesdk_entity_id',
 };
+
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 export default function CredentialsScreen({ navigation }: Props) {
   const [environment, setEnvironment] = useState<'uat' | 'production'>('uat');
@@ -30,6 +43,8 @@ export default function CredentialsScreen({ navigation }: Props) {
   const [customerId, setCustomerId] = useState('');
   const [customerChildId, setCustomerChildId] = useState('');
   const [flowId, setFlowId] = useState('idv');
+  const [customerRef, setCustomerRef] = useState('');
+  const [entityId, setEntityId] = useState('');
 
   useEffect(() => {
     loadStoredCredentials();
@@ -37,22 +52,26 @@ export default function CredentialsScreen({ navigation }: Props) {
 
   const loadStoredCredentials = async () => {
     try {
-      const [storedEnv, storedApiKey, storedCustomerId, storedChildId, storedFlowId] =
-        await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.ENVIRONMENT),
-          AsyncStorage.getItem(STORAGE_KEYS.API_KEY),
-          AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_ID),
-          AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_CHILD_ID),
-          AsyncStorage.getItem(STORAGE_KEYS.FLOW_ID),
-        ]);
+      const [
+        storedEnv, storedApiKey, storedCustomerId,
+        storedChildId, storedFlowId, storedCustomerRef, storedEntityId,
+      ] = await Promise.all([
+        AsyncStorage.getItem(STORAGE_KEYS.ENVIRONMENT),
+        AsyncStorage.getItem(STORAGE_KEYS.API_KEY),
+        AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_ID),
+        AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_CHILD_ID),
+        AsyncStorage.getItem(STORAGE_KEYS.FLOW_ID),
+        AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_REF),
+        AsyncStorage.getItem(STORAGE_KEYS.ENTITY_ID),
+      ]);
 
-      if (storedEnv === 'uat' || storedEnv === 'production') {
-        setEnvironment(storedEnv);
-      }
+      if (storedEnv === 'uat' || storedEnv === 'production') setEnvironment(storedEnv);
       if (storedApiKey) setApiKey(storedApiKey);
       if (storedCustomerId) setCustomerId(storedCustomerId);
       if (storedChildId) setCustomerChildId(storedChildId);
       if (storedFlowId) setFlowId(storedFlowId);
+      if (storedCustomerRef) setCustomerRef(storedCustomerRef);
+      if (storedEntityId) setEntityId(storedEntityId);
     } catch {
       // Silently fail — fields will use defaults
     }
@@ -66,11 +85,13 @@ export default function CredentialsScreen({ navigation }: Props) {
         AsyncStorage.setItem(STORAGE_KEYS.CUSTOMER_ID, customerId),
         AsyncStorage.setItem(STORAGE_KEYS.CUSTOMER_CHILD_ID, customerChildId),
         AsyncStorage.setItem(STORAGE_KEYS.FLOW_ID, flowId),
+        AsyncStorage.setItem(STORAGE_KEYS.CUSTOMER_REF, customerRef),
+        AsyncStorage.setItem(STORAGE_KEYS.ENTITY_ID, entityId),
       ]);
     } catch {
       // Silently fail on save
     }
-  }, [environment, apiKey, customerId, customerChildId, flowId]);
+  }, [environment, apiKey, customerId, customerChildId, flowId, customerRef, entityId]);
 
   const handleStartVerification = async () => {
     if (!apiKey.trim()) {
@@ -94,6 +115,8 @@ export default function CredentialsScreen({ navigation }: Props) {
       customerId: customerId.trim(),
       customerChildId: customerChildId.trim(),
       flowId: flowId.trim(),
+      customerRef: customerRef.trim() || generateUUID(),
+      entityId: entityId.trim(),
     });
   };
 
@@ -118,9 +141,7 @@ export default function CredentialsScreen({ navigation }: Props) {
             trackColor={{ false: '#4A90D9', true: '#E74C3C' }}
             thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
           />
-          <Text
-            style={[styles.switchLabel, environment === 'production' && styles.switchLabelActive]}
-          >
+          <Text style={[styles.switchLabel, environment === 'production' && styles.switchLabelActive]}>
             Production
           </Text>
         </View>
@@ -175,6 +196,32 @@ export default function CredentialsScreen({ navigation }: Props) {
         />
       </View>
 
+      <Text style={styles.sectionNote}>Session — fill one or leave both empty</Text>
+
+      <View style={styles.fieldContainer}>
+        <Text style={styles.label}>Customer Reference (optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={customerRef}
+          onChangeText={setCustomerRef}
+          placeholder="Auto-generated if empty"
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+      </View>
+
+      <View style={styles.fieldContainer}>
+        <Text style={styles.label}>Entity ID (optional)</Text>
+        <TextInput
+          style={styles.input}
+          value={entityId}
+          onChangeText={setEntityId}
+          placeholder="Existing entity ID"
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handleStartVerification} activeOpacity={0.8}>
         <Text style={styles.buttonText}>Start Verification</Text>
       </TouchableOpacity>
@@ -183,35 +230,13 @@ export default function CredentialsScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F7FA',
-  },
-  contentContainer: {
-    padding: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1A1A2E',
-    textAlign: 'center',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginBottom: 32,
-  },
-  fieldContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#374151',
-    marginBottom: 8,
-  },
+  container: { flex: 1, backgroundColor: '#F5F7FA' },
+  contentContainer: { padding: 24 },
+  title: { fontSize: 24, fontWeight: '700', color: '#1A1A2E', textAlign: 'center', marginBottom: 4 },
+  subtitle: { fontSize: 14, color: '#6B7280', textAlign: 'center', marginBottom: 32 },
+  sectionNote: { fontSize: 12, color: '#9CA3AF', marginBottom: 12, marginTop: 4 },
+  fieldContainer: { marginBottom: 20 },
+  label: { fontSize: 14, fontWeight: '600', color: '#374151', marginBottom: 8 },
   input: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
@@ -222,31 +247,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#111827',
   },
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-  },
-  switchLabel: {
-    fontSize: 15,
-    color: '#9CA3AF',
-    fontWeight: '500',
-  },
-  switchLabelActive: {
-    color: '#1A1A2E',
-    fontWeight: '700',
-  },
-  button: {
-    backgroundColor: '#2563EB',
-    borderRadius: 8,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginTop: 12,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '700',
-  },
+  switchRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12 },
+  switchLabel: { fontSize: 15, color: '#9CA3AF', fontWeight: '500' },
+  switchLabelActive: { color: '#1A1A2E', fontWeight: '700' },
+  button: { backgroundColor: '#2563EB', borderRadius: 8, paddingVertical: 16, alignItems: 'center', marginTop: 12 },
+  buttonText: { color: '#FFFFFF', fontSize: 16, fontWeight: '700' },
 });

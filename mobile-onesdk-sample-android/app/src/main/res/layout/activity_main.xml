@@ -95,6 +95,38 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_flow_id"
             android:inputType="text"
+            android:layout_marginBottom="16dp"
+            android:autofillHints="" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_customer_ref"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etCustomerRef"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_customer_ref"
+            android:inputType="text"
+            android:layout_marginBottom="16dp"
+            android:autofillHints="" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_entity_id"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etEntityId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_entity_id"
+            android:inputType="text"
             android:layout_marginBottom="32dp"
             android:autofillHints="" />
 

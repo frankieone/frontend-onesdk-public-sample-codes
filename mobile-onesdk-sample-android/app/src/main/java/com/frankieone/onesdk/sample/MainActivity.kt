@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_CUSTOMER_ID = "customer_id"
         private const val KEY_CUSTOMER_CHILD_ID = "customer_child_id"
         private const val KEY_FLOW_ID = "flow_id"
+        private const val KEY_CUSTOMER_REF = "customer_ref"
+        private const val KEY_ENTITY_ID = "entity_id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         binding.etCustomerId.setText(prefs.getString(KEY_CUSTOMER_ID, ""))
         binding.etCustomerChildId.setText(prefs.getString(KEY_CUSTOMER_CHILD_ID, ""))
         binding.etFlowId.setText(prefs.getString(KEY_FLOW_ID, "idv"))
+        binding.etCustomerRef.setText(prefs.getString(KEY_CUSTOMER_REF, ""))
+        binding.etEntityId.setText(prefs.getString(KEY_ENTITY_ID, ""))
     }
 
     private fun savePreferences() {
@@ -59,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             .putString(KEY_CUSTOMER_ID, binding.etCustomerId.text.toString())
             .putString(KEY_CUSTOMER_CHILD_ID, binding.etCustomerChildId.text.toString())
             .putString(KEY_FLOW_ID, binding.etFlowId.text.toString())
+            .putString(KEY_CUSTOMER_REF, binding.etCustomerRef.text.toString())
+            .putString(KEY_ENTITY_ID, binding.etEntityId.text.toString())
             .apply()
     }
 
@@ -91,6 +97,8 @@ class MainActivity : AppCompatActivity() {
             putExtra("customer_id", customerId)
             putExtra("customer_child_id", binding.etCustomerChildId.text.toString().trim())
             putExtra("flow_id", flowId)
+            putExtra("customer_ref", binding.etCustomerRef.text.toString().trim())
+            putExtra("entity_id", binding.etEntityId.text.toString().trim())
         }
         startActivity(intent)
     }

@@ -1,14 +1,19 @@
 package com.frankieone.onesdk.sample
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.frankieone.onesdk.sample.databinding.ActivityWebviewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,14 +39,28 @@ class WebViewActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Verification"
 
+        requestCameraPermissionsIfNeeded()
+
         val baseUrl = intent.getStringExtra("base_url") ?: ""
         val apiKey = intent.getStringExtra("api_key") ?: ""
         val customerId = intent.getStringExtra("customer_id") ?: ""
         val customerChildId = intent.getStringExtra("customer_child_id") ?: ""
         val flowId = intent.getStringExtra("flow_id") ?: ""
+        val customerRef = intent.getStringExtra("customer_ref") ?: ""
+        val entityId = intent.getStringExtra("entity_id") ?: ""
 
         setupWebView()
-        fetchOnboardingUrl(baseUrl, apiKey, customerId, customerChildId, flowId)
+        fetchOnboardingUrl(baseUrl, apiKey, customerId, customerChildId, flowId, customerRef, entityId)
+    }
+
+    private fun requestCameraPermissionsIfNeeded() {
+        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+        val missing = permissions.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+        if (missing.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, missing.toTypedArray(), 1001)
+        }
     }
 
     private fun setupWebView() {
@@ -56,7 +75,12 @@ class WebViewActivity : AppCompatActivity() {
                 return false
             }
         }
-        binding.webView.webChromeClient = WebChromeClient()
+        binding.webView.webChromeClient = object : WebChromeClient() {
+            override fun onPermissionRequest(request: PermissionRequest?) {
+                // Grant camera/microphone access requested by the hosted OneSDK page
+                request?.grant(request.resources)
+            }
+        }
     }
 
     private fun fetchOnboardingUrl(
@@ -64,7 +88,9 @@ class WebViewActivity : AppCompatActivity() {
         apiKey: String,
         customerId: String,
         customerChildId: String,
-        flowId: String
+        flowId: String,
+        customerRef: String,
+        entityId: String
     ) {
         binding.progressBar.visibility = View.VISIBLE
         binding.webView.visibility = View.GONE
@@ -78,9 +104,10 @@ class WebViewActivity : AppCompatActivity() {
                         .build()
 
                     val body = JSONObject().apply {
-                        put("customerRef", UUID.randomUUID().toString())
+                        put("customerRef", customerRef.ifEmpty { UUID.randomUUID().toString() })
                         put("consent", true)
                         put("flowId", flowId)
+                        if (entityId.isNotEmpty()) put("entityId", entityId)
                     }
 
                     val requestBuilder = Request.Builder()

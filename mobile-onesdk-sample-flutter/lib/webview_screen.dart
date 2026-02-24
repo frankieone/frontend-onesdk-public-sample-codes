@@ -11,6 +11,8 @@ class WebViewScreen extends StatefulWidget {
   final String customerId;
   final String customerChildId;
   final String flowId;
+  final String customerRef;
+  final String entityId;
 
   const WebViewScreen({
     super.key,
@@ -19,6 +21,8 @@ class WebViewScreen extends StatefulWidget {
     required this.customerId,
     required this.customerChildId,
     required this.flowId,
+    required this.customerRef,
+    required this.entityId,
   });
 
   @override
@@ -40,8 +44,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ? 'https://api.uat.frankie.one'
         : 'https://api.frankie.one';
 
-    final uri =
-        Uri.parse('$baseUrl/idv/v2/idvalidate/onboarding-url');
+    final uri = Uri.parse('$baseUrl/idv/v2/idvalidate/onboarding-url');
 
     final headers = <String, String>{
       'api_key': widget.apiKey,
@@ -53,14 +56,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
       headers['X-Frankie-CustomerChildID'] = widget.customerChildId;
     }
 
-    final body = jsonEncode({
-      'customerRef': const Uuid().v4(),
+    final bodyMap = <String, dynamic>{
+      'customerRef': widget.customerRef.isEmpty
+          ? const Uuid().v4()
+          : widget.customerRef,
       'consent': true,
       'flowId': widget.flowId,
-    });
+    };
+    if (widget.entityId.isNotEmpty) {
+      bodyMap['entityId'] = widget.entityId;
+    }
 
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      final response = await http.post(uri, headers: headers, body: jsonEncode(bodyMap));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -74,8 +82,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
           _showErrorAndPop('No URL found in response');
         }
       } else {
-        _showErrorAndPop(
-            'API error: ${response.statusCode} - ${response.body}');
+        _showErrorAndPop('API error: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
       _showErrorAndPop('Network error: $e');
@@ -102,6 +109,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
           : WebViewWidget(
               controller: WebViewController()
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                ..setOnPlatformPermissionRequest(
+                  (PlatformWebViewPermissionRequest request) {
+                    request.grant();
+                  },
+                )
                 ..loadRequest(Uri.parse(_url!)),
             ),
     );

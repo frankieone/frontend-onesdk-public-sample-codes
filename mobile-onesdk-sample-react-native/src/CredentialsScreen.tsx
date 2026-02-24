@@ -25,6 +25,8 @@ const STORAGE_KEYS = {
   CUSTOMER_ID: '@onesdk_customer_id',
   CUSTOMER_CHILD_ID: '@onesdk_customer_child_id',
   FLOW_ID: '@onesdk_flow_id',
+  CUSTOMER_REF: '@onesdk_customer_ref',
+  ENTITY_ID: '@onesdk_entity_id',
 };
 
 function generateUUID(): string {
@@ -41,6 +43,8 @@ export default function CredentialsScreen({navigation}: Props) {
   const [customerId, setCustomerId] = useState('');
   const [customerChildId, setCustomerChildId] = useState('');
   const [flowId, setFlowId] = useState('idv');
+  const [customerRef, setCustomerRef] = useState('');
+  const [entityId, setEntityId] = useState('');
 
   useEffect(() => {
     loadStoredCredentials();
@@ -54,29 +58,25 @@ export default function CredentialsScreen({navigation}: Props) {
         storedCustomerId,
         storedCustomerChildId,
         storedFlowId,
+        storedCustomerRef,
+        storedEntityId,
       ] = await Promise.all([
         AsyncStorage.getItem(STORAGE_KEYS.IS_UAT),
         AsyncStorage.getItem(STORAGE_KEYS.API_KEY),
         AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_ID),
         AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_CHILD_ID),
         AsyncStorage.getItem(STORAGE_KEYS.FLOW_ID),
+        AsyncStorage.getItem(STORAGE_KEYS.CUSTOMER_REF),
+        AsyncStorage.getItem(STORAGE_KEYS.ENTITY_ID),
       ]);
 
-      if (storedIsUAT !== null) {
-        setIsUAT(storedIsUAT === 'true');
-      }
-      if (storedApiKey !== null) {
-        setApiKey(storedApiKey);
-      }
-      if (storedCustomerId !== null) {
-        setCustomerId(storedCustomerId);
-      }
-      if (storedCustomerChildId !== null) {
-        setCustomerChildId(storedCustomerChildId);
-      }
-      if (storedFlowId !== null) {
-        setFlowId(storedFlowId);
-      }
+      if (storedIsUAT !== null) setIsUAT(storedIsUAT === 'true');
+      if (storedApiKey !== null) setApiKey(storedApiKey);
+      if (storedCustomerId !== null) setCustomerId(storedCustomerId);
+      if (storedCustomerChildId !== null) setCustomerChildId(storedCustomerChildId);
+      if (storedFlowId !== null) setFlowId(storedFlowId);
+      if (storedCustomerRef !== null) setCustomerRef(storedCustomerRef);
+      if (storedEntityId !== null) setEntityId(storedEntityId);
     } catch {
       // Ignore storage read errors
     }
@@ -101,11 +101,10 @@ export default function CredentialsScreen({navigation}: Props) {
         AsyncStorage.setItem(STORAGE_KEYS.IS_UAT, String(isUAT)),
         AsyncStorage.setItem(STORAGE_KEYS.API_KEY, apiKey.trim()),
         AsyncStorage.setItem(STORAGE_KEYS.CUSTOMER_ID, customerId.trim()),
-        AsyncStorage.setItem(
-          STORAGE_KEYS.CUSTOMER_CHILD_ID,
-          customerChildId.trim(),
-        ),
+        AsyncStorage.setItem(STORAGE_KEYS.CUSTOMER_CHILD_ID, customerChildId.trim()),
         AsyncStorage.setItem(STORAGE_KEYS.FLOW_ID, flowId.trim()),
+        AsyncStorage.setItem(STORAGE_KEYS.CUSTOMER_REF, customerRef.trim()),
+        AsyncStorage.setItem(STORAGE_KEYS.ENTITY_ID, entityId.trim()),
       ]);
     } catch {
       // Ignore storage write errors
@@ -121,7 +120,8 @@ export default function CredentialsScreen({navigation}: Props) {
       customerId: customerId.trim(),
       customerChildId: customerChildId.trim(),
       flowId: flowId.trim(),
-      customerRef: generateUUID(),
+      customerRef: customerRef.trim() || generateUUID(),
+      entityId: entityId.trim(),
     });
   }
 
@@ -191,6 +191,32 @@ export default function CredentialsScreen({navigation}: Props) {
             value={flowId}
             onChangeText={setFlowId}
             placeholder="Enter Flow ID"
+            placeholderTextColor="#999"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Customer Reference (optional)</Text>
+          <TextInput
+            style={styles.input}
+            value={customerRef}
+            onChangeText={setCustomerRef}
+            placeholder="Auto-generated if empty"
+            placeholderTextColor="#999"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Entity ID (optional)</Text>
+          <TextInput
+            style={styles.input}
+            value={entityId}
+            onChangeText={setEntityId}
+            placeholder="Existing entity ID"
             placeholderTextColor="#999"
             autoCapitalize="none"
             autoCorrect={false}
