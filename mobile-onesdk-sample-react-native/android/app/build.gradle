@@ -3,7 +3,11 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 react {
-    // Intentionally left empty to use defaults
+    // Bundle JS into the APK for all build variants (including debug).
+    // In RN 0.73+, debuggableVariants defaults to ["debug"], which tells the
+    // Gradle plugin to skip bundling and rely on Metro instead. Setting it to
+    // an empty list forces bundling so the APK works standalone (no Metro).
+    debuggableVariants = []
 }
 
 def enableProguardInReleaseBuilds = false
