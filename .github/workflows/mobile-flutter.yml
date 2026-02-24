@@ -1,0 +1,50 @@
+name: Mobile Flutter Build
+
+on:
+  push:
+    paths:
+      - 'mobile-onesdk-sample-flutter/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: |
+          cd mobile-onesdk-sample-flutter
+          flutter pub get
+
+      - name: Build debug APK
+        run: |
+          cd mobile-onesdk-sample-flutter
+          flutter build apk --debug
+
+      - name: Delete old release if exists
+        run: gh release delete mobile-flutter-latest --yes || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete old tag if exists
+        run: git push origin --delete mobile-flutter-latest || true
+
+      - name: Create GitHub Release
+        run: |
+          gh release create mobile-flutter-latest \
+            mobile-onesdk-sample-flutter/build/app/outputs/flutter-apk/app-debug.apk \
+            --title "Flutter OneSDK Sample (latest)" \
+            --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
+            --latest=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

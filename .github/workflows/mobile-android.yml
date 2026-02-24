@@ -1,0 +1,51 @@
+name: Mobile Android Build
+
+on:
+  push:
+    paths:
+      - 'mobile-onesdk-sample-android/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Make gradlew executable
+        run: chmod +x mobile-onesdk-sample-android/gradlew
+
+      - name: Build debug APK
+        run: |
+          cd mobile-onesdk-sample-android
+          ./gradlew assembleDebug
+
+      - name: Delete old release if exists
+        run: gh release delete mobile-android-latest --yes || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete old tag if exists
+        run: git push origin --delete mobile-android-latest || true
+
+      - name: Create GitHub Release
+        run: |
+          gh release create mobile-android-latest \
+            mobile-onesdk-sample-android/app/build/outputs/apk/debug/app-debug.apk \
+            --title "Android OneSDK Sample (latest)" \
+            --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
+            --latest=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

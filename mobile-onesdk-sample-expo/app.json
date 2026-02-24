@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "FrankieOne OneSDK Sample",
+    "slug": "onesdk-sample-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.frankieone.onesdk.exposample"
+    },
+    "android": {
+      "package": "com.frankieone.onesdk.exposample",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": ["android.permission.INTERNET"]
+    },
+    "plugins": [
+      [
+        "react-native-webview",
+        {}
+      ]
+    ]
+  }
+}
