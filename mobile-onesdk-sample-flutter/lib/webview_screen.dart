@@ -44,7 +44,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
       AndroidWebViewController.enableDebugging(true);
       final androidController = _controller.platform as AndroidWebViewController;
       androidController.setMediaPlaybackRequiresUserGesture(false);
-      androidController.setAllowFileAccess(true);
       androidController.setOnPlatformPermissionRequest(
         (PlatformWebViewPermissionRequest request) {
           request.grant();
