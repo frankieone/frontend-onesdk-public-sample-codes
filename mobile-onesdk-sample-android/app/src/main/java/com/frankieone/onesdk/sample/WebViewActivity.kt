@@ -64,6 +64,7 @@ class WebViewActivity : AppCompatActivity() {
     }
 
     private fun setupWebView() {
+        WebView.setWebContentsDebuggingEnabled(true)
         binding.webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true

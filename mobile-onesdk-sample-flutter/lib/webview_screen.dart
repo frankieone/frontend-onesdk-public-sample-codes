@@ -41,6 +41,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted);
 
     if (_controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
       (_controller.platform as AndroidWebViewController)
           .setOnPlatformPermissionRequest(
         (PlatformWebViewPermissionRequest request) {

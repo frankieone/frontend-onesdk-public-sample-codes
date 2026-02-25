@@ -101,6 +101,7 @@ export default function WebViewScreen({ route, navigation }: Props) {
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}
         mediaCapturePermissionGrantType="grant"
+        webviewDebuggingEnabled
       />
     </View>
   );
