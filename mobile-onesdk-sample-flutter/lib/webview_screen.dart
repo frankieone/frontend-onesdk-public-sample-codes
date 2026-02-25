@@ -109,11 +109,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
           : WebViewWidget(
               controller: WebViewController()
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                ..setOnPlatformPermissionRequest(
-                  (PlatformWebViewPermissionRequest request) {
-                    request.grant();
-                  },
-                )
                 ..loadRequest(Uri.parse(_url!)),
             ),
     );
