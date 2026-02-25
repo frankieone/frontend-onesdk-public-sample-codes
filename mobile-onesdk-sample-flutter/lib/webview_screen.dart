@@ -38,12 +38,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
   void initState() {
     super.initState();
     _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setMediaPlaybackRequiresUserGesture(false);
+      ..setJavaScriptMode(JavaScriptMode.unrestricted);
 
     if (_controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
       final androidController = _controller.platform as AndroidWebViewController;
+      androidController.setMediaPlaybackRequiresUserGesture(false);
       androidController.setAllowFileAccess(true);
       androidController.setOnPlatformPermissionRequest(
         (PlatformWebViewPermissionRequest request) {
