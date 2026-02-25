@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 
@@ -51,6 +52,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
       );
     }
 
+    _requestPermissionsAndFetchUrl();
+  }
+
+  Future<void> _requestPermissionsAndFetchUrl() async {
+    await [Permission.camera, Permission.microphone].request();
     _fetchUrl();
   }
 
