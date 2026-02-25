@@ -1,0 +1,110 @@
+name: Mobile Expo Build
+
+on:
+  push:
+    paths:
+      - 'mobile-onesdk-sample-expo/**'
+      - '.github/workflows/mobile-expo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd mobile-onesdk-sample-expo
+          npm install
+
+      - name: Generate placeholder icon assets
+        run: |
+          cd mobile-onesdk-sample-expo
+          mkdir -p assets
+          python3 - <<'EOF'
+          import struct, zlib
+
+          def make_png(width, height, r, g, b):
+              def chunk(tag, data):
+                  c = tag + data
+                  return struct.pack('>I', len(data)) + c + struct.pack('>I', zlib.crc32(c) & 0xffffffff)
+              raw = b''.join(b'\x00' + bytes([r, g, b] * width) for _ in range(height))
+              return (b'\x89PNG\r\n\x1a\n'
+                      + chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 2, 0, 0, 0))
+                      + chunk(b'IDAT', zlib.compress(raw))
+                      + chunk(b'IEND', b''))
+
+          for name, w, h, r, g, b in [
+              ('assets/icon.png',          1024, 1024, 26, 115, 232),
+              ('assets/adaptive-icon.png', 1024, 1024, 26, 115, 232),
+              ('assets/splash.png',        1284, 2778, 255, 255, 255),
+          ]:
+              open(name, 'wb').write(make_png(w, h, r, g, b))
+          EOF
+
+      - name: Expo prebuild
+        run: |
+          cd mobile-onesdk-sample-expo
+          npx expo prebuild --platform android --no-install
+
+      - name: Patch generated build.gradle to bundle JS in debug APK
+        run: |
+          python3 - <<'EOF'
+          import re, sys
+          path = 'mobile-onesdk-sample-expo/android/app/build.gradle'
+          text = open(path).read()
+          # Insert debuggableVariants = [] inside the react {} block so the
+          # Gradle plugin bundles JS into the APK (default skips debug variants).
+          patched = re.sub(r'(react\s*\{)', r'\1\n    debuggableVariants = []', text, count=1)
+          if patched == text:
+              print("WARNING: react {} block not found — bundle may be missing", file=sys.stderr)
+          else:
+              open(path, 'w').write(patched)
+              print("Patched: debuggableVariants = [] added to react {} block")
+          EOF
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.6'
+
+      - name: Build debug APK
+        run: |
+          cd mobile-onesdk-sample-expo/android
+          gradle assembleDebug
+
+      - name: Rename APK
+        run: mv mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/app-debug.apk mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/f1-expo.apk
+
+      - name: Delete old release if exists
+        run: gh release delete mobile-expo-latest --yes || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete old tag if exists
+        run: git push origin --delete mobile-expo-latest || true
+
+      - name: Create GitHub Release
+        run: |
+          gh release create mobile-expo-latest \
+            mobile-onesdk-sample-expo/android/app/build/outputs/apk/debug/f1-expo.apk \
+            --title "F1 Expo (latest)" \
+            --notes "Debug APK built from commit ${{ github.sha }}. Install on any Android device (enable Unknown Sources)." \
+            --latest=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">F1 Android</string>
+    <string name="label_environment">Environment</string>
+    <string name="label_api_key">API Key</string>
+    <string name="label_customer_id">Customer ID</string>
+    <string name="label_customer_child_id">Customer Child ID</string>
+    <string name="label_flow_id">Flow ID</string>
+    <string name="label_customer_ref">Customer Reference</string>
+    <string name="label_entity_id">Entity ID</string>
+    <string name="hint_api_key">Enter your API key</string>
+    <string name="hint_customer_id">Enter your Customer ID</string>
+    <string name="hint_customer_child_id">Optional</string>
+    <string name="hint_flow_id">idv</string>
+    <string name="hint_customer_ref">Optional – auto-generated if empty</string>
+    <string name="hint_entity_id">Optional – existing entity ID</string>
+    <string name="btn_start_verification">Start Verification</string>
+</resources>
