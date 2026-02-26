@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String environment;
@@ -30,12 +32,31 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  String? _url;
   bool _isLoading = true;
+  late final WebViewController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted);
+
+    if (_controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+      final androidController = _controller.platform as AndroidWebViewController;
+      androidController.setMediaPlaybackRequiresUserGesture(false);
+      androidController.setOnPlatformPermissionRequest(
+        (PlatformWebViewPermissionRequest request) {
+          request.grant();
+        },
+      );
+    }
+
+    _requestPermissionsAndFetchUrl();
+  }
+
+  Future<void> _requestPermissionsAndFetchUrl() async {
+    await [Permission.camera, Permission.microphone].request();
     _fetchUrl();
   }
 
@@ -74,8 +95,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
         final data = jsonDecode(response.body);
         final url = data['url'] as String?;
         if (url != null && mounted) {
+          await _controller.loadRequest(Uri.parse(url));
           setState(() {
-            _url = url;
             _isLoading = false;
           });
         } else {
@@ -106,16 +127,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : WebViewWidget(
-              controller: WebViewController()
-                ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                ..setOnPlatformPermissionRequest(
-                  (PlatformWebViewPermissionRequest request) {
-                    request.grant();
-                  },
-                )
-                ..loadRequest(Uri.parse(_url!)),
-            ),
+          : WebViewWidget(controller: _controller),
     );
   }
 }

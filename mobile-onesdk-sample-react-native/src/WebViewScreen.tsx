@@ -102,6 +102,7 @@ export default function WebViewScreen({navigation, route}: Props) {
         domStorageEnabled
         mediaPlaybackRequiresUserAction={false}
         allowsInlineMediaPlayback
+        webviewDebuggingEnabled
       />
     </View>
   );
