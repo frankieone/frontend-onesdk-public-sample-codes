@@ -16,7 +16,7 @@
     "@angular/core": "^16.2.0",
     "@angular/forms": "^16.2.0",
     "@angular/platform-browser": "^16.2.0",
-    "@angular/platform-browser-dynamic": "^16.2.0",
+    "@angular/platform-browser-dynamic": "^20.0.7",
     "@angular/router": "^16.2.0",
     "@frankieone/one-sdk": "^1.9.35",
     "rxjs": "~7.8.0",
