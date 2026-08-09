@@ -12,3 +12,32 @@ updates:
       prefix: "chore"
       prefix-development: "chore"
       include: "scope"
+
+  - package-ecosystem: "npm"
+    directories:
+      - "/frontend-onesdk-sample-angular-vite"
+      - "/frontend-onesdk-sample-angular-webpack"
+      - "/frontend-onesdk-sample-nextjs-webpack"
+      - "/frontend-onesdk-sample-react-vite"
+      - "/frontend-onesdk-sample-react-webpack"
+      - "/frontend-onesdk-sample-vanilla-react-webpack"
+      - "/frontend-onesdk-sample-vue-vite"
+      - "/frontend-onesdk-sample-vue-webpack"
+      - "/mobile-onesdk-sample-expo"
+      - "/mobile-onesdk-sample-react-native"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    # Mirror the .npmrc supply-chain cooldown: don't propose versions
+    # published less than 7 days ago.
+    cooldown:
+      default-days: 7
+      exclude:
+        - "@frankieone/*"
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
