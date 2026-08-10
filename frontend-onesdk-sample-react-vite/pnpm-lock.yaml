@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@frankieone/one-sdk':
-        specifier: ^0.0.3-npm
-        version: 0.0.3-npm(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)
+        specifier: 1.7.6
+        version: 1.7.6(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -315,8 +315,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@frankieone/one-sdk@0.0.3-npm':
-    resolution: {integrity: sha512-4Rm37mBj7uvYwgsv6Kb80JNJ6W60Bgz6EbxC3VOCeT4qoHoP2ijsdP+bqlr1b65A/eW3cmcEwJzZCjxL7Q4hiQ==}
+  '@frankieone/one-sdk@1.7.6':
+    resolution: {integrity: sha512-/zuJIQ/PtpuV9WDGZarPc7X0UWrx9bUHt8ypsqXPSQheCRuQR58NvnZN7o8xDku8X21/jkqtMYfsCp6X72OW1g==}
     engines: {node: '>=18', npm: '>=10'}
     peerDependencies:
       ts-toolbelt: ^9.0.0
@@ -898,6 +898,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -1293,6 +1294,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
@@ -2062,7 +2064,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@frankieone/one-sdk@0.0.3-npm(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)':
+  '@frankieone/one-sdk@1.7.6(@types/react@18.3.3)(redux@5.0.1)(ts-toolbelt@9.6.0)(type-fest@0.20.2)(typescript@5.5.3)':
     dependencies:
       '@reduxjs/toolkit': 2.2.6(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@testing-library/jest-dom': 5.17.0
