@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.73.4",
+    "react-native": "0.87.0",
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@react-native/metro-config": "0.73.4",
+    "@react-native/metro-config": "0.87.0",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.2.6",
     "typescript": "5.0.4"
