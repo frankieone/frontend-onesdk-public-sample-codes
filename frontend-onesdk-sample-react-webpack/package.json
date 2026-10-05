@@ -39,6 +39,9 @@
   "overrides": {
     "react-scripts": {
       "typescript": "^5"
+    },
+    "@frankieone/one-sdk@1.7.6": {
+      "axios": "^0.34.0"
     }
   }
 }
