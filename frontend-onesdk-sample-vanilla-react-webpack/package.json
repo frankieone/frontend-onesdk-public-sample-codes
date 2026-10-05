@@ -33,7 +33,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "overrides": {
-    "@frankieone/one-sdk": {
+    "@frankieone/one-sdk@1.7.6": {
       "axios": "^0.34.0"
     }
   }
