@@ -16,6 +16,11 @@ run the development server:
 npm run dev
 # or
 yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
 > [!WARNING]
 > **Local development only: never put your API key in a browser or app.**
@@ -23,13 +28,8 @@ yarn dev
 > Anyone who opens a page built this way can read the key and use your account.
 > In production, create the individual and the OneSDK session on your server (with the entity's `entityId`)
 > and pass only the session token to the browser. See [Production integration](../README.md#production-integration-create-the-session-on-your-server).
-<!-- onesdk-key-warning -->
 
-# or
-pnpm dev
-# or
-bun dev
-```
+<!-- onesdk-key-warning -->
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

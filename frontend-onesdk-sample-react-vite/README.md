@@ -8,6 +8,7 @@ This template provides a minimal setup to get React working in Vite with HMR and
 > Anyone who opens a page built this way can read the key and use your account.
 > In production, create the individual and the OneSDK session on your server (with the entity's `entityId`)
 > and pass only the session token to the browser. See [Production integration](../README.md#production-integration-create-the-session-on-your-server).
+
 <!-- onesdk-key-warning -->
 
 Currently, two official plugins are available:

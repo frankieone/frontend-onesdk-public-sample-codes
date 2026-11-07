@@ -40,7 +40,7 @@ curl -s https://api.uat.frankie.one/v2/individuals \
 # 2. Create a OneSDK session for that entity (server-side only)
 #    Credentials are customerId:apiKey, or customerId:customerChildId:apiKey, base64-encoded.
 curl -s https://backend.kycaml.uat.frankiefinancial.io/auth/v2/machine-session \
-  -H "Authorization: machine $(printf '%s:%s' "$FRANKIE_CUSTOMER_ID" "$FRANKIE_API_KEY" | base64 -w0)" \
+  -H "Authorization: machine $(printf '%s:%s' "$FRANKIE_CUSTOMER_ID" "$FRANKIE_API_KEY" | base64 | tr -d '\n')" \
   -H "Content-Type: application/json" \
   -d '{"permissions": {"preset": "one-sdk", "entityId": "<entityId from step 1>"}}'
 # -> { "token": "…", … }   Send only the token to the browser.
@@ -50,54 +50,82 @@ curl -s https://backend.kycaml.uat.frankiefinancial.io/auth/v2/machine-session \
 
 ```js
 // server.js: runs on YOUR server. FRANKIE_API_KEY is never sent to the browser.
+// `requireSignedInUser`, `req.user` and `db` stand for your own authentication and user store.
 import express from 'express'
 
 const app = express()
-app.use(express.json())
 
 const KYC_API = 'https://api.uat.frankie.one'
 const SESSION_API = 'https://backend.kycaml.uat.frankiefinancial.io'
 const { FRANKIE_CUSTOMER_ID, FRANKIE_API_KEY } = process.env
 
-// Called by your front end once your own user is signed in to your app.
-app.post('/api/onesdk-session', async (req, res) => {
-  // 1. Create the individual (or look up the entityId you stored for this user).
-  const created = await fetch(`${KYC_API}/v2/individuals`, {
-    method: 'POST',
-    headers: {
-      api_key: FRANKIE_API_KEY,
-      'X-Frankie-CustomerID': FRANKIE_CUSTOMER_ID,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      individual: { name: { givenName: req.body.givenName, familyName: req.body.familyName } },
-    }),
-  }).then(r => r.json())
-  const entityId = created.individual.entityId
+// Replace with your real authentication. Only a signed-in user of YOUR app may get
+// a session, and only for their own entity. An open endpoint like this would let
+// anyone create individuals and sessions on your account.
+function requireSignedInUser(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: 'Sign in first' })
+  next()
+}
 
-  // 2. Create a OneSDK session locked to that entity.
-  const credentials = Buffer.from(`${FRANKIE_CUSTOMER_ID}:${FRANKIE_API_KEY}`).toString('base64')
-  const session = await fetch(`${SESSION_API}/auth/v2/machine-session`, {
-    method: 'POST',
-    headers: { Authorization: `machine ${credentials}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ permissions: { preset: 'one-sdk', entityId } }),
-  }).then(r => r.json())
+async function callFrankie(url, init) {
+  const response = await fetch(url, init)
+  if (!response.ok) {
+    throw new Error(`FrankieOne ${new URL(url).pathname} returned ${response.status}`)
+  }
+  return response.json()
+}
 
-  // 3. Return only the token.
-  res.json({ token: session.token })
+app.post('/api/onesdk-session', requireSignedInUser, async (req, res) => {
+  try {
+    // 1. Reuse this user's entity; create it only the first time.
+    //    Take the details from your own records, never from the request.
+    let entityId = await db.getFrankieEntityId(req.user.id)
+    if (!entityId) {
+      const created = await callFrankie(`${KYC_API}/v2/individuals`, {
+        method: 'POST',
+        headers: {
+          api_key: FRANKIE_API_KEY,
+          'X-Frankie-CustomerID': FRANKIE_CUSTOMER_ID,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          individual: { name: { givenName: req.user.givenName, familyName: req.user.familyName } },
+        }),
+      })
+      entityId = created?.individual?.entityId
+      if (!entityId) throw new Error('No entityId returned')
+      await db.saveFrankieEntityId(req.user.id, entityId)
+    }
+
+    // 2. Create a OneSDK session locked to that entity.
+    const credentials = Buffer.from(`${FRANKIE_CUSTOMER_ID}:${FRANKIE_API_KEY}`).toString('base64')
+    const session = await callFrankie(`${SESSION_API}/auth/v2/machine-session`, {
+      method: 'POST',
+      headers: { Authorization: `machine ${credentials}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ permissions: { preset: 'one-sdk', entityId } }),
+    })
+    if (!session?.token) throw new Error('No session token returned')
+
+    // 3. Return only the token.
+    res.json({ token: session.token })
+  } catch (err) {
+    // Log the message only: never log or return your API key or FrankieOne's response body.
+    console.error('OneSDK session failed:', err.message)
+    res.status(502).json({ error: 'Could not start verification. Please try again.' })
+  }
 })
 
 app.listen(3001)
 ```
 
-In the browser:
+In the browser, once your user is signed in to your app:
 
 ```js
-const { token } = await fetch('/api/onesdk-session', { method: 'POST' }).then(r => r.json())
+const response = await fetch('/api/onesdk-session', { method: 'POST', credentials: 'include' })
+if (!response.ok) throw new Error('Could not start verification')
+const { token } = await response.json()
 const oneSdk = await OneSDK({ session: { token }, mode: 'production' })
 ```
-
-Store the `entityId` against your own user record, so a returning user gets a session for the same entity instead of a new one.
 
 ## Available Samples
 
