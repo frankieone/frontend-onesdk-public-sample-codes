@@ -3,6 +3,15 @@
 WARNING react-script is not maintained thus, it does not satisfy typescript requirement for oneSDK.
 if you still want to use react-script + oneSDK do <code>npm install --force</code>
 
+> [!WARNING]
+> **Local development only: never put your API key in a browser or app.**
+> This sample creates the OneSDK session in the browser with your API key so it can run without a backend.
+> Anyone who opens a page built this way can read the key and use your account.
+> In production, create the individual and the OneSDK session on your server (with the entity's `entityId`)
+> and pass only the session token to the browser. See [Production integration](../README.md#production-integration-create-the-session-on-your-server).
+
+<!-- onesdk-key-warning -->
+
 react-script used typescript version is 4
 oneSDK is on 5+
 

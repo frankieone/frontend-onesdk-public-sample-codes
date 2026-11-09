@@ -26,6 +26,16 @@ const useOneSDK = ({config, alternateKey}) => {
     }
     try {
 
+      // SECURITY WARNING: LOCAL DEVELOPMENT ONLY.
+      // This sample creates the OneSDK session in the browser with your API key so it
+      // can run without a backend. Never do this in production: anyone who opens your
+      // page can read the key and call FrankieOne as you.
+      // In production, on YOUR SERVER:
+      //   1. create the individual with POST /v2/individuals and keep the entityId;
+      //   2. create the session with permissions { preset: 'one-sdk', entityId };
+      //   3. send only the session token to the browser.
+      // FrankieOne can refuse sessions created from a browser with an API key.
+      // See: https://github.com/frankieone/frontend-onesdk-public-sample-codes#production-integration-create-the-session-on-your-server
       const tokenRawAsync = await fetch(`${BFF_BASE_URL}/auth/v2/machine-session`, {
           method: "POST",
           headers: {
