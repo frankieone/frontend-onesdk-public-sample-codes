@@ -28,6 +28,8 @@
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ]
     },
-    "plugins": []
+    "plugins": [
+      "expo-status-bar"
+    ]
   }
 }
