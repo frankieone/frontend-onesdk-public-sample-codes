@@ -4,7 +4,8 @@ A sample Expo application demonstrating the FrankieOne OneSDK hosted verificatio
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 22.13+ (Expo SDK 58 / React Native 0.88)
+- JDK 17 (for Android builds)
 - npm or yarn
 - Android Studio (for Android builds) or Xcode (for iOS builds)
 
