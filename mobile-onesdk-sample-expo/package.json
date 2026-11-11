@@ -34,6 +34,8 @@
     },
     "@expo/metro-config": {
       "postcss": "^8.5.18"
-    }
+    },
+    "node-forge": "^1.4.2",
+    "@xmldom/xmldom": "^0.8.15"
   }
 }
