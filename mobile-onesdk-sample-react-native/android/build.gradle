@@ -1,28 +1,27 @@
 buildscript {
     ext {
-        buildToolsVersion = "34.0.0"
+        buildToolsVersion = "37.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 34
-        targetSdkVersion = 34
-        ndkVersion = "25.1.8937393"
-        kotlinVersion = "1.9.22"
+        compileSdkVersion = 37
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.2.0"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
-        // Security: raise vulnerable build-tool libraries that AGP 8.1.1 pulls onto
+        // Security: raise vulnerable build-tool libraries that AGP 9.2.1 pulls onto
         // the buildscript classpath (Wiz high/critical findings). Build-time only;
-        // nothing here is packaged into the APK.
-        classpath(platform("io.netty:netty-bom:4.1.137.Final"))
-        classpath(platform("io.grpc:grpc-bom:1.75.0"))
+        // nothing here is packaged into the APK. Keep a constraint only while it
+        // still raises the version AGP resolves on its own (AGP 9.2.1 resolves
+        // jose4j 0.9.5, jdom2 2.0.6 and guava 33.3.1-jre).
         constraints {
-            classpath("com.google.protobuf:protobuf-java:3.25.5")
-            classpath("commons-io:commons-io:2.14.0")
             classpath("org.bitbucket.b_c:jose4j:0.9.6")
             classpath("org.jdom:jdom2:2.0.6.1")
             classpath("com.google.guava:guava:33.7.2-android")
@@ -31,11 +30,3 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
-
-// Enforce JVM target 17 for all Kotlin compilations (including third-party modules
-// like react-native-screens) to match the JDK used in CI.
-allprojects {
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions.jvmTarget = "17"
-    }
-}
