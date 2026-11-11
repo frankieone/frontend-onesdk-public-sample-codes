@@ -4,7 +4,8 @@ A React Native sample app demonstrating the FrankieOne OneSDK hosted verificatio
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 22.13+ (React Native 0.88)
+- JDK 17 (for Android builds)
 - React Native CLI
 - Android Studio (for Android builds)
 - Xcode (for iOS builds, macOS only)
