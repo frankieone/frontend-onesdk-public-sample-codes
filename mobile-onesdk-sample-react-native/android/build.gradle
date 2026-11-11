@@ -20,7 +20,7 @@ buildscript {
         // the buildscript classpath (Wiz high/critical findings). Build-time only;
         // nothing here is packaged into the APK. Keep a constraint only while it
         // still raises the version AGP resolves on its own (AGP 9.2.1 resolves
-        // jose4j 0.9.5 and jdom2 2.0.6).
+        // jose4j 0.9.5, jdom2 2.0.6 and guava 33.3.1-jre).
         constraints {
             classpath("org.bitbucket.b_c:jose4j:0.9.6")
             classpath("org.jdom:jdom2:2.0.6.1")
