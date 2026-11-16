@@ -38,7 +38,8 @@
   },
   "overrides": {
     "react-scripts": {
-      "typescript": "^5"
+      "typescript": "^5",
+      "node-forge": "^1.4.2"
     },
     "@frankieone/one-sdk@1.7.6": {
       "axios": "^0.34.0"
