@@ -2,6 +2,7 @@ name: Mobile Expo Build
 
 on:
   push:
+    branches: [main]
     paths:
       - 'mobile-onesdk-sample-expo/**'
       - '.github/workflows/mobile-expo.yml'
