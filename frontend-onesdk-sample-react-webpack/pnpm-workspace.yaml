@@ -8,7 +8,8 @@ minimumReleaseAgeExclude:
 # and run `npm install` rely on package.json's copy.
 overrides:
   'react-scripts>typescript': '^5'
-  'react-scripts>node-forge': '^1.4.2'
+  # npm's nested override reaches node-forge anywhere under react-scripts; pnpm's 'a>b' only matches direct dependencies.
+  'node-forge@<1.4.2': '^1.4.2'
   '@frankieone/one-sdk@1.7.6>axios': '^0.34.0'
 # Build scripts: none are needed; every package below ships prebuilt binaries or only prints a banner.
 allowBuilds:

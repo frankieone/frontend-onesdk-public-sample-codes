@@ -4,6 +4,5 @@ minimumReleaseAge: 10080 # 7 days, in minutes
 minimumReleaseAgeStrict: true
 minimumReleaseAgeExclude:
   - '@frankieone/*'
-# Flat node_modules, as with npm: the Android/Gradle build resolves React Native's native plugins and autolinking
-# through paths like ../node_modules/@react-native/gradle-plugin, which pnpm's default isolated layout does not provide.
+# Flat node_modules, as with npm: the Android Gradle build reads paths like ../node_modules/@react-native/gradle-plugin.
 nodeLinker: hoisted

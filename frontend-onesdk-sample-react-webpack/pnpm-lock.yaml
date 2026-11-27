@@ -6,7 +6,7 @@ settings:
 
 overrides:
   react-scripts>typescript: ^5
-  react-scripts>node-forge: ^1.4.2
+  node-forge@<1.4.2: ^1.4.2
   '@frankieone/one-sdk@1.7.6>axios': ^0.34.0
 
 importers:

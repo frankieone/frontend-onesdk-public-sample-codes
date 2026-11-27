@@ -23,8 +23,7 @@ jobs:
           node-version: '22'
 
       # pnpm is installed at the version pinned in package.json's packageManager field.
-      # This is the public action rather than FrankieOne's internal setup_pnpm wrapper, which
-      # a public repository cannot use. All dependencies are public, so no registry token is needed.
+      # All dependencies are public, so no registry token is needed.
       - name: Set up pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:
