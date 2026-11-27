@@ -14,3 +14,7 @@ FrankieOne OneSDK integration sample using Angular with vite
 - Install dependencies `npm i`
 - Update environment variables located at `src/environments/environment.ts`, if you need to run locally, you need to update development variables too at `src/environments/environment.development.ts`
 - Start the app `npm run start` or `ng serve`
+
+## Package manager
+
+The `npm` commands above are for you, and so is `npm install` if you copy this sample into your own project; leave out the `packageManager` field of `package.json` when you do. Contributors to this repository use pnpm 11 (Node 22.13 or later; `brew install pnpm` or `npm install -g pnpm@11.28.13`): `pnpm install`, then `pnpm run <script>`. See the [repository README](../README.md#package-managers).

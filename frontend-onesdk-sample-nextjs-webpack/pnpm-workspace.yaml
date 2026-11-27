@@ -1,0 +1,9 @@
+# Supply-chain cooldown: don't install versions published less than 7 days ago.
+# Our own org's packages are exempt so internal releases aren't delayed.
+minimumReleaseAge: 10080 # 7 days, in minutes
+minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  - '@frankieone/*'
+# Build scripts: none are needed; every package below ships prebuilt binaries or only prints a banner.
+allowBuilds:
+  'es5-ext': false

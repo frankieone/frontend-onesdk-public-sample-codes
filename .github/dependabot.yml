@@ -28,8 +28,8 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-    # Mirror the .npmrc supply-chain cooldown: don't propose versions
-    # published less than 7 days ago.
+    # Mirror the pnpm-workspace.yaml supply-chain cooldown (minimumReleaseAge): don't propose
+    # versions published less than 7 days ago.
     cooldown:
       default-days: 7
       exclude:

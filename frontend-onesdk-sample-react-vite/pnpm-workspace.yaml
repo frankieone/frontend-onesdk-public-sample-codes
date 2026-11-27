@@ -1,0 +1,25 @@
+# Supply-chain cooldown: don't install versions published less than 7 days ago.
+# Our own org's packages are exempt so internal releases aren't delayed.
+minimumReleaseAge: 10080 # 7 days, in minutes
+minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  - '@frankieone/*'
+# Keep in step with "overrides" in package.json: npm ignores this file, and customers who copy this sample
+# and run `npm install` rely on package.json's copy.
+overrides:
+  'axios@<1.20.0': '^1.20.0'
+  'brace-expansion@<1.1.16': '^1.1.16'
+  'flatted@<3.4.2': '^3.4.2'
+  'follow-redirects@<1.16.2': '^1.16.2'
+  'js-yaml@<4.3.1': '^4.3.1'
+  'minimatch@<3.1.3': '^3.1.3'
+  'nanoid@<3.3.18': '^3.3.18'
+  'postcss@<8.5.23': '^8.5.23'
+  'sanitize-html@<2.17.5': '^2.17.5'
+  'source-map-js@<1.2.2': '^1.2.2'
+  'underscore@<1.13.8': '^1.13.8'
+  'uuid@<11.1.1': '^11.1.1'
+# Build scripts: none are needed; every package below ships prebuilt binaries or only prints a banner.
+allowBuilds:
+  'es5-ext': false
+  'esbuild': false

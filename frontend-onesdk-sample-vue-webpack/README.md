@@ -17,3 +17,7 @@ FrankieOne OneSDK integration sample using Vue with webpack
   - Set VUE_APP_API_LOGIN_PATH as FrankieOne's machine session generator path, "/auth/v2/machine-session"
   - Set your Customer ID / Customer Child ID (if exist) / Google API Key (Optional) and your OneSDK API Key
 - Start the app `npm run serve`
+
+## Package manager
+
+The `npm` commands above are for you, and so is `npm install` if you copy this sample into your own project; leave out the `packageManager` field of `package.json` when you do. Contributors to this repository use pnpm 11 (Node 22.13 or later; `brew install pnpm` or `npm install -g pnpm@11.28.13`): `pnpm install`, then `pnpm run <script>`. See the [repository README](../README.md#package-managers).

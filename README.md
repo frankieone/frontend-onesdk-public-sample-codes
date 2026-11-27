@@ -199,3 +199,11 @@ The following samples are included in this repository, each representing a diffe
 3. **Running the samples**
 
    Follow the README.md file for sample specific instructions. Mostly it will ask you to just fill in .env file with your creds and call npm install followed by npm run start/dev 
+
+
+### Package managers
+
+The commands in each sample's README use `npm`, and that is all you need to run a sample or copy it into your own project.
+
+- **Copying a sample into your project:** copy its files and run `npm install` (or your own package manager). Leave out the `packageManager` field of its `package.json`, since Corepack-aware tools would otherwise try to use pnpm, and keep its `overrides` block, which pins patched versions of transitive dependencies.
+- **Contributing to this repository:** the JavaScript samples (including `mobile-onesdk-sample-expo` and `mobile-onesdk-sample-react-native`) are managed with pnpm 11, and each has a `pnpm-lock.yaml`. You need Node 22.13 or later; install pnpm with `brew install pnpm` or `npm install -g pnpm@11.28.13` (pnpm 10 or later then runs the version pinned in `packageManager`). Run `pnpm install` and `pnpm run <script>` inside a sample directory. Each sample's `pnpm-workspace.yaml` holds the 7-day release cooldown and a copy of the `overrides` (npm ignores that file, so keep the two in step). All dependencies are public, so no registry token is needed.

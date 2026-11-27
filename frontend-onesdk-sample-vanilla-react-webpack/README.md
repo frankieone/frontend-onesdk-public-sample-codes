@@ -20,3 +20,7 @@ and copy the content of <code>.env.example</code> into your .env file. fill all 
 
 <code>npm start</code> to start the project
 OneSDK Sample Demo
+
+## Package manager
+
+The `npm` commands above are for you, and so is `npm install` if you copy this sample into your own project; leave out the `packageManager` field of `package.json` when you do. Contributors to this repository use pnpm 11 (Node 22.13 or later; `brew install pnpm` or `npm install -g pnpm@11.28.13`): `pnpm install`, then `pnpm run <script>`. See the [repository README](../README.md#package-managers).

@@ -1,0 +1,18 @@
+# Supply-chain cooldown: don't install versions published less than 7 days ago.
+# Our own org's packages are exempt so internal releases aren't delayed.
+minimumReleaseAge: 10080 # 7 days, in minutes
+minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  - '@frankieone/*'
+# Keep in step with "overrides" in package.json: npm ignores this file, and customers who copy this sample
+# and run `npm install` rely on package.json's copy.
+overrides:
+  'uuid@<11.1.1': '^11.1.1'
+  'webpack-dev-server@<5.2.6': '^5.2.6'
+# Build scripts: none are needed; every package below ships prebuilt binaries or only prints a banner.
+allowBuilds:
+  '@parcel/watcher': false
+  'es5-ext': false
+  'esbuild': false
+  'lmdb': false
+  'msgpackr-extract': false
