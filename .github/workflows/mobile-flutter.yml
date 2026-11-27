@@ -2,6 +2,7 @@ name: Mobile Flutter Build
 
 on:
   push:
+    branches: [main]
     paths:
       - 'mobile-onesdk-sample-flutter/**'
       - '.github/workflows/mobile-flutter.yml'
